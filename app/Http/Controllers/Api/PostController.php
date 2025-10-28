@@ -20,15 +20,9 @@ class PostController extends Controller
 }
 public function update(createPostRequest $request, Post $post, updatePostAction $updatePostAction)
 {
-    $validated = $request->validate([
-        'body' => 'required|string',
-        'image' => 'nullable|image|max:2048',
-    ]);
-
+    $validated = $request->validated();
     $dto = createPostData::fromRequest($request);
-
     $updatedPost = $updatePostAction->execute($post, $dto);
-
     return response()->json($updatedPost);
 }
 }
