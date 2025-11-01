@@ -8,8 +8,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DTOs\createPostData;
 use App\Http\Requests\createPostRequest;
+use App\Actions\Post\getPostsAction;
+use App\DTOs\getPostsData;
 class PostController extends Controller
 {
+     public function index(getPostsAction $action)
+    {
+        $data = GetPostsData::fromRequest(request());
+        $posts = $action->execute($data);
+        return response()->json($posts);
+    }
    public function store(createPostRequest $request, CreatePostAction $createPostAction)
 {
     $validated = $request->validated();
