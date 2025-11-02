@@ -2,23 +2,20 @@
 
 namespace App\Actions\Auth;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class loginAction
 {
-    public function execute(string $email, string $password): string
+    public function execute(string $email, string $password)
     {
-        $user = User::where('email', $email)->first();
-
-        if (! $user || ! Hash::check($password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!Auth::attempt(['email' => $email, 'password' => $password])) {
+            abort(401, 'Invalid credentials');
         }
 
-        // Create a Sanctum token
-        return $user->createToken('api_token')->plainTextToken;
+        $user = Auth::user();
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return $token;
     }
 }
+
