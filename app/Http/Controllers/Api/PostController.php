@@ -10,6 +10,7 @@ use App\DTOs\createPostData;
 use App\Http\Requests\createPostRequest;
 use App\Actions\Post\getPostsAction;
 use App\Actions\Post\updatePostAction;
+use App\Actions\Post\likePostAction;
 use App\DTOs\getPostsData;
 use App\Http\Resources\PostResource;
 use App\Actions\Image\storeImageAction;
@@ -74,6 +75,20 @@ class PostController extends Controller
             \Log::error('Post update error: '.$e->getMessage());
             return $this->errorResponse('Failed to update post', 500);
         }
+    }
+    public function like(Post $post , likePostAction $likePostAction)
+    {
+        $user = auth()->user(); // current user
+        if (!$user) {
+        return $this->errorResponse('un authenticated', 401);
+        }
+
+    $like = $likePostAction->execute($user, $post);
+
+    return $this->successResponse([
+        'message' => 'Post liked successfully',
+        'like' => $like
+    ], 200);
     }
 
     public function destroy($id, deletePostAction $deletePostAction)

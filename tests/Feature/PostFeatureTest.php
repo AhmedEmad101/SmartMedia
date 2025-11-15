@@ -75,4 +75,26 @@ class PostFeatureTest extends TestCase
 
         $response->assertStatus(401);
     }
+    /** @test */
+    public function user_can_like_a_post()
+{
+    $user = User::factory()->create();
+    $post = Post::factory()->create();
+
+    $response = $this->actingAs($user, 'sanctum')
+        ->postJson("/api/posts/{$post->id}/like");
+
+    $response->assertStatus(200);
+    $this->assertDatabaseHas('likes', [
+        'user_id' => $user->id,
+        'post_id' => $post->id,
+    ]);
+}
+/** @test */
+    public function guest_cannot_like_a_post()
+{
+    $post = Post::factory()->create();
+    $response = $this->postJson("/api/posts/{$post->id}/like");
+    $response->assertStatus(401);
+}
 }
