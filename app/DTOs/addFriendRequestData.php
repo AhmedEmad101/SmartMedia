@@ -2,18 +2,16 @@
 
 namespace App\DTOs;
 
-final class addFriendData
+final class addFriendRequestData
 {
     public function __construct(
-        public int $sender_id	,
-        public string $status
+        public int $receiver_id	
     ) {}
 
     public static function fromRequest($request): self
     {
         return new self(
-            $request->input('sender_id'),
-            $request->input('status')
+            $request->input('receiver_id')
         );
     }
 }

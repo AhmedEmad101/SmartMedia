@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login_execption'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('posts')->group(function () {
         Route::get('/', [PostController::class, 'index']);
@@ -16,6 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::prefix('friends')->group(function () {
         Route::get('/', [FriendController::class, 'index']);
+        Route::post('/send-request', [FriendController::class, 'send_friend_request']);
+        Route::delete('/delete-request', [FriendController::class, 'delete_friend_request']);
         Route::post('/add', [FriendController::class, 'add_friend']);
         Route::delete('/{friend}', [FriendController::class, 'delete_friend']);
     });

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Actions\Friend;
-
 use App\Models\FriendRequest;
 
 final class deleteFriendRequestAction
@@ -10,7 +9,8 @@ final class deleteFriendRequestAction
     {
         if ($friend_request) {
             $friend_request->delete();
+            return 1;
         }
-
+    return 0;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Actions\Friend;
 
-use App\Actions\deleteFriendRequestAction;
+use App\Actions\Friend\Request\deleteFriendRequestAction;
 use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
@@ -12,22 +12,26 @@ class addFriendAction
     public function execute(User $user, $data)
     {
         $friend_request = FriendRequest::query()
-            ->where('sender_id', $user->id)->where('reciever_id', $data->reciever_id)->first();
-        if ($friend_request && $friend_request->status == 'accepted') {
+            ->where('sender_id',$data->sender_id)->where('receiver_id', $user->sender_id)
+            ->where('status','pending')
+            ->first();
+        if ($friend_request && $data->status == 'accepted') {
             $sender_friend = Friend::create(
                 ['user_id' => $user->id,
-                    'friend_id' => $data->reciever_id,
+                    'friend_id' => $data->receiver_id,
                 ]
             );
             $reciever = Friend::create(
-                ['user_id' => $data->reciever_id,
+                ['user_id' => $data->receiver_id	,
                     'friend_id' => $user->id,
                 ]
             );
+             deleteFriendRequestAction::execute($user->id,$data->receiver_id);
 
-            return;
+            return 1;
         } elseif ($friend_request && $friend_request->status == 'declined') {
-            deleteFriendRequestAction::execute($friend_request);
+            deleteFriendRequestAction::execute($user->id,$data->receiver_id);
+            return 0;
         }
 
     }

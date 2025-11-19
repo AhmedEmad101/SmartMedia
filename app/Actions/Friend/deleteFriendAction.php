@@ -12,9 +12,13 @@ final class deleteFriendAction
             ->where('user_id', $user_id)
             ->where('friend_id', $friend_id)
             ->first();
-        if ($friend) {
+        $user = Friend::query()
+          ->where('user_id', $friend_id)
+            ->where('friend_id', $user_id)
+            ->first();
+        if ($friend && $user) {
             $friend->delete();
-
+            $user->delete();
             return 1;
         }
 

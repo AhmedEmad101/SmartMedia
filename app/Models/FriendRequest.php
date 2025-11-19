@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FriendRequest extends Model
 {
-    protected $fillable = ['sender_id', 'reciever_id'];
+    protected $fillable = ['sender_id', 'receiver_id'];
 }

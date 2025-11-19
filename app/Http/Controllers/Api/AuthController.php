@@ -28,4 +28,8 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Logged out successfully']);
     }
+     public function login_execption(Request $request)
+    {
+        return response()->json(['message' => 'you have to login']);
+    }
 }
