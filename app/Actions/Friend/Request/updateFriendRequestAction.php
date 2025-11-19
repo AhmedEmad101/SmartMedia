@@ -1,16 +1,10 @@
 <?php
 
-namespace App\Actions\Friend;
+namespace App\Actions\Friend\Request;
 use App\Models\FriendRequest;
 
 final class deleteFriendRequestAction
 {
-    public function execute(FriendRequest $friend_request)
-    {
-        if ($friend_request) {
-            $friend_request->delete();
-            return 1;
-        }
-    return 0;
-    }
+    public function execute()//todo
+    {}
 }

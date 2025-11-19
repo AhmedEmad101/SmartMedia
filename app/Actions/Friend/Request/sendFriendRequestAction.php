@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Actions\Friend;
+namespace App\Actions\Friend\Request;
 use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
