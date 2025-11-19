@@ -2,8 +2,8 @@
 
 namespace App\Actions\Post;
 
-use App\Models\Post;
 use App\DTOs\createPostData;
+use App\Models\Post;
 
 class updatePostAction
 {

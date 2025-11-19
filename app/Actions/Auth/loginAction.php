@@ -8,7 +8,7 @@ class loginAction
 {
     public function execute(string $email, string $password)
     {
-        if (!Auth::attempt(['email' => $email, 'password' => $password])) {
+        if (! Auth::attempt(['email' => $email, 'password' => $password])) {
             abort(401, 'Invalid credentials');
         }
 
@@ -18,4 +18,3 @@ class loginAction
         return $token;
     }
 }
-

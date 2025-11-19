@@ -10,7 +10,8 @@ final class CreatePostData
         public string $body,
         public ?UploadedFile $image = null,
     ) {}
-     public static function fromRequest($request): self
+
+    public static function fromRequest($request): self
     {
         return new self(
             body: $request->input('body'),

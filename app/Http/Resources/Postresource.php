@@ -14,10 +14,10 @@ class Postresource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-       return [
+        return [
             'id' => $this->id,
             'body' => $this->body,
-            'image' => $this->image ? asset('storage/' . $this->image) : null,
+            'image' => $this->image ? asset('storage/'.$this->image) : null,
             'created_at' => $this->created_at,
             'user' => [
                 'id' => $this->user->id,

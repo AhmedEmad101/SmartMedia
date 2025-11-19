@@ -1,5 +1,7 @@
 <?php
+
 namespace App\DTOs;
+
 final class getPostsData
 {
     public function __construct(

@@ -7,10 +7,10 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class PostFeatureTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function user_can_create_a_post()
     {
@@ -20,7 +20,7 @@ class PostFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment(['body' => 'Hello, world!']);
+            ->assertJsonFragment(['body' => 'Hello, world!']);
 
         $this->assertDatabaseHas('posts', ['body' => 'Hello, world!']);
     }
@@ -35,7 +35,7 @@ class PostFeatureTest extends TestCase
         $response = $this->actingAs($user, 'sanctum')->getJson('/api/posts');
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['data']);
+            ->assertJsonStructure(['data']);
     }
 
     /** @test */
@@ -49,7 +49,7 @@ class PostFeatureTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['body' => 'Updated content']);
+            ->assertJsonFragment(['body' => 'Updated content']);
 
         $this->assertDatabaseHas('posts', ['body' => 'Updated content']);
     }
@@ -75,26 +75,28 @@ class PostFeatureTest extends TestCase
 
         $response->assertStatus(401);
     }
+
     /** @test */
     public function user_can_like_a_post()
-{
-    $user = User::factory()->create();
-    $post = Post::factory()->create();
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
 
-    $response = $this->actingAs($user, 'sanctum')
-        ->postJson("/api/posts/{$post->id}/like");
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson("/api/posts/{$post->id}/like");
 
-    $response->assertStatus(200);
-    $this->assertDatabaseHas('likes', [
-        'user_id' => $user->id,
-        'post_id' => $post->id,
-    ]);
-}
-/** @test */
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('likes', [
+            'user_id' => $user->id,
+            'post_id' => $post->id,
+        ]);
+    }
+
+    /** @test */
     public function guest_cannot_like_a_post()
-{
-    $post = Post::factory()->create();
-    $response = $this->postJson("/api/posts/{$post->id}/like");
-    $response->assertStatus(401);
-}
+    {
+        $post = Post::factory()->create();
+        $response = $this->postJson("/api/posts/{$post->id}/like");
+        $response->assertStatus(401);
+    }
 }

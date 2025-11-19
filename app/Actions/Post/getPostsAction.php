@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Actions\Post;
 
-use App\Models\Post;
 use App\DTOs\getPostsData;
+use App\Models\Post;
 
 final class GetPostsAction
 {

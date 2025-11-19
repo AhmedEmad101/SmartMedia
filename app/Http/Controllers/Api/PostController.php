@@ -2,38 +2,41 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\Image\storeImageAction;
 use App\Actions\Post\createPostAction;
 use App\Actions\Post\deletePostAction;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\DTOs\createPostData;
-use App\Http\Requests\createPostRequest;
 use App\Actions\Post\getPostsAction;
-use App\Actions\Post\updatePostAction;
 use App\Actions\Post\likePostAction;
+use App\Actions\Post\updatePostAction;
+use App\DTOs\createPostData;
 use App\DTOs\getPostsData;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\createPostRequest;
 use App\Http\Resources\PostResource;
-use App\Actions\Image\storeImageAction;
-use App\Traits\ApiResponseTrait;
 use App\Models\Post;
+use App\Traits\ApiResponseTrait;
+
 class PostController extends Controller
 {
-     use ApiResponseTrait;
-     public function index(getPostsAction $action)
+    use ApiResponseTrait;
+
+    public function index(getPostsAction $action)
     {
         try {
             $data = getPostsData::fromRequest(request());
             $posts = $action->execute($data);
             $resourceCollection = PostResource::collection($posts);
             $resourceArray = $resourceCollection->response()->getData(true);
-               return $this->successResponse($resourceArray, 'Posts retrieved successfully');
+
+            return $this->successResponse($resourceArray, 'Posts retrieved successfully');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
     }
-   public function store(createPostRequest $request, CreatePostAction $createPostAction, storeImageAction $storeImage)
-{
-   
+
+    public function store(createPostRequest $request, CreatePostAction $createPostAction, storeImageAction $storeImage)
+    {
+
         try {
             $validated = $request->validated();
             $dto = createPostData::fromRequest($request);
@@ -48,12 +51,14 @@ class PostController extends Controller
             }
             $resource = new PostResource($post);
             $resourceArray = $resource->response()->getData(true);
-             return $this->successResponse($resourceArray, 'Post created successfully', 201);
+
+            return $this->successResponse($resourceArray, 'Post created successfully', 201);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
-}
- public function update(createPostRequest $request, Post $post, updatePostAction $updatePostAction, storeImageAction $storeImage)
+    }
+
+    public function update(createPostRequest $request, Post $post, updatePostAction $updatePostAction, storeImageAction $storeImage)
     {
         try {
             $validated = $request->validated();
@@ -63,7 +68,7 @@ class PostController extends Controller
                 if ($path) {
                     $dtoArray = (array) $dto;
                     $dtoArray['image'] = $path;
-                    $dto = (object) $dtoArray; 
+                    $dto = (object) $dtoArray;
                 }
             }
             $updatedPost = $updatePostAction->execute($post, $dto);
@@ -73,22 +78,24 @@ class PostController extends Controller
             return $this->successResponse($resourceArray, 'Post updated successfully');
         } catch (\Throwable $e) {
             \Log::error('Post update error: '.$e->getMessage());
+
             return $this->errorResponse('Failed to update post', 500);
         }
     }
-    public function like(Post $post , likePostAction $likePostAction)
+
+    public function like(Post $post, likePostAction $likePostAction)
     {
         $user = auth()->user(); // current user
-        if (!$user) {
-        return $this->errorResponse('un authenticated', 401);
+        if (! $user) {
+            return $this->errorResponse('un authenticated', 401);
         }
 
-    $like = $likePostAction->execute($user, $post);
+        $like = $likePostAction->execute($user, $post);
 
-    return $this->successResponse([
-        'message' => 'Post liked successfully',
-        'like' => $like
-    ], 200);
+        return $this->successResponse([
+            'message' => 'Post liked successfully',
+            'like' => $like,
+        ], 200);
     }
 
     public function destroy($id, deletePostAction $deletePostAction)
@@ -103,6 +110,7 @@ class PostController extends Controller
             return $this->successResponse(null, 'Post deleted successfully');
         } catch (\Throwable $e) {
             \Log::error('Post delete error: '.$e->getMessage());
+
             return $this->errorResponse('Failed to delete post', 500);
         }
     }
