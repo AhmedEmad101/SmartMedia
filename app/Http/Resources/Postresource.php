@@ -23,6 +23,9 @@ class Postresource extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->name,
                 'email' => $this->user->email,
+                'avatar'=>$this->user->avatar 
+                          ? asset('storage/' . $this->user->avatar) 
+                          : asset('default-avatar.png')
             ],
         ];
     }

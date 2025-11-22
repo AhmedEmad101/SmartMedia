@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -22,5 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add', [FriendController::class, 'add_friend']);
         Route::delete('/{friend}', [FriendController::class, 'delete_friend']);
     });
+     Route::prefix('user')->group(function () {
+         Route::get('profile', [UserController::class, 'profile']);
+         Route::post('avatar', [UserController::class, 'updateAvatar']);
+        });
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+ 
