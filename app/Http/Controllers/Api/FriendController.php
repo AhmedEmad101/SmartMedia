@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 use App\Actions\Friend\getFriendsAction;
 use App\Actions\Friend\addFriendAction;
 use App\Actions\Friend\deleteFriendAction;
+use App\Actions\Friend\Request\getFriendRequestsAction;
 use App\Actions\Friend\Request\sendFriendRequestAction;
 use App\Actions\Friend\Request\deleteFriendRequestAction;
 use App\DTOs\addFriendData;
@@ -12,7 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
 use App\Models\FriendRequest;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\FriendRequestResource;
 class FriendController extends Controller
 {
     use ApiResponseTrait;
@@ -25,6 +26,16 @@ class FriendController extends Controller
         }
          return $this->errorResponse('Failed to fetch friends', 400);
     }
+    public function get_friend_requests()
+{
+    $requests = getFriendRequestsAction::execute(auth()->user()->id);
+
+    if ($requests) {
+        return $this->successResponse(FriendRequestResource::collection($requests), 'Friend requests retrieved successfully');
+    }
+
+    return $this->successResponse([], 'No pending friend requests');
+}
     public function send_friend_request(Request $request, sendFriendRequestAction $add_friend_request_action)
     {
         $friend_data = addFriendRequestData::fromRequest($request);
