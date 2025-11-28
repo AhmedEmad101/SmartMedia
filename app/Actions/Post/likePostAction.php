@@ -15,13 +15,13 @@ final class likePostAction
             ->first();
 
         if ($existing) {
-            return $existing; // or return null
+            $existing->delete();
+            return false;
         }
-
-        // Create new like
-        return Like::create([
+        Like::create([
             'user_id' => $user->id,
             'post_id' => $post->id,
         ]);
+        return true;
     }
 }

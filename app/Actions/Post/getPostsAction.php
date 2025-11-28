@@ -9,7 +9,7 @@ final class GetPostsAction
 {
     public function execute(getPostsData $data)
     {
-        $query = Post::query()->with('user');
+        $query = Post::query()->with('user','likes','comments');
 
         return $query
             ->latest()

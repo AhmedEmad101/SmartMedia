@@ -90,11 +90,10 @@ class PostController extends Controller
             return $this->errorResponse('un authenticated', 401);
         }
 
-        $like = $likePostAction->execute($user, $post);
-
+        $liked = $likePostAction->execute($user, $post);
         return $this->successResponse([
-            'message' => 'Post liked successfully',
-            'like' => $like,
+            'liked' => $liked,
+            'likes_count' => $post->likes()->count()
         ], 200);
     }
 
