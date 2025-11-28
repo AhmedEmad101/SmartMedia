@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\api;
-
+use App\Actions\Friend\getFriendsAction;
 use App\Actions\Friend\addFriendAction;
 use App\Actions\Friend\deleteFriendAction;
 use App\Actions\Friend\Request\sendFriendRequestAction;
@@ -16,7 +16,15 @@ use Illuminate\Http\Request;
 class FriendController extends Controller
 {
     use ApiResponseTrait;
-
+    public function get_friends(Request $request , getFriendsAction $action)
+    {
+        $friends = $action->execute(auth()->user()->id);
+        if($friends)
+        {
+         return $this->successResponse($friends,'Friend has been retrieved successfully');   
+        }
+         return $this->errorResponse('Failed to fetch friends', 400);
+    }
     public function send_friend_request(Request $request, sendFriendRequestAction $add_friend_request_action)
     {
         $friend_data = addFriendRequestData::fromRequest($request);

@@ -7,29 +7,40 @@ use App\Actions\Auth\logoutAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
-
+use App\Traits\ApiResponseTrait;
 class AuthController extends Controller
 {
+    use ApiResponseTrait;
     public function login(LoginRequest $request, LoginAction $loginAction)
     {
-        $data = $request->validated();
-        $token = $loginAction->execute($data['email'], $data['password']);
+        try {
+            $data = $request->validated();
+            $token = $loginAction->execute($data['email'], $data['password']);
 
-        return response()->json([
-            'message' => 'Login successful!',
-            'token' => $token,
-            'user' => auth()->user(),
-        ]);
+            if (! $token) {
+                return $this->errorResponse('Invalid credentials', 401);
+            }
+
+            return $this->successResponse([
+                'token' => $token,
+                'user' => auth()->user()
+            ], 'Login successful!');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
 
     public function logout(Request $request)
     {
-        (new logoutAction)->execute($request);
-
-        return response()->json(['message' => 'Logged out successfully']);
+       try {
+            (new logoutAction)->execute($request);
+            return $this->successResponse(null, 'Logged out successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
      public function login_execption(Request $request)
     {
-        return response()->json(['message' => 'you have to login']);
+        return $this->errorResponse('You have to login', 401);
     }
 }
