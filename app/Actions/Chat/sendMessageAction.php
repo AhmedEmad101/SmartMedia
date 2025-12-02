@@ -4,25 +4,19 @@ namespace App\Actions\Chat;
 
 use App\Models\Chat;
 use App\Models\User;
-
+use App\Events\ChatCreated;
 class sendMessageAction
 {
-    public static function execute(array $data)
+    public static function execute(int $senderId, int $receiverId, string $message)
     {
-        // Validate receiver exists
-        $receiver = User::find($data['receiver_id']);
-        if (!$receiver) {
-            return response()->json(['message' => 'Receiver not found'], 404);
-        }
-
-        // Create the message
-        $message = Chat::create([
-            'sender_id'   => auth()->id(),
-            'receiver_id' => $data['receiver_id'],
-            'message'     => $data['message'] ?? null,
-            'attachment'  => $data['attachment'] ?? null,
+        $chat = Chat::create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'message' => $message,
         ]);
 
-        return $message;
+        event(new ChatCreated($chat));
+
+        return $chat;
     }
 }

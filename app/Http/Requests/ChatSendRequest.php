@@ -27,4 +27,13 @@ class ChatSendRequest extends FormRequest
             'attachment'  => 'nullable|string',
         ];
     }
+     public function messages(): array
+    {
+        return [
+            'receiver_id.required' => 'The receiver ID is required.',
+            'receiver_id.exists'   => 'The specified receiver does not exist.',
+            'message.string'       => 'The message must be a string.',
+            'attachment.string'    => 'The attachment must be a string.',
+        ];
+    }
 }

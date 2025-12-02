@@ -6,7 +6,8 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ChatController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Broadcast;
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/login', [AuthController::class, 'login_execption'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
@@ -32,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
          Route::prefix('chat')->group(function () {
           Route::post('/send', [ChatController::class, 'send']);
-          Route::get('/{receiver_id}', [ChatController::class, 'fetch']);
+          Route::get('/', [ChatController::class, 'fetch']);
           Route::post('/read/{sender_id}', [ChatController::class, 'markRead']);
 
         });
