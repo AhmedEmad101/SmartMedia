@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 use App\Actions\Friend\getFriendsAction;
 use App\Actions\Friend\addFriendAction;
 use App\Actions\Friend\deleteFriendAction;
+use App\Actions\Friend\findFriendsAction;
 use App\Actions\Friend\Request\getFriendRequestsAction;
 use App\Actions\Friend\Request\sendFriendRequestAction;
 use App\Actions\Friend\Request\deleteFriendRequestAction;
@@ -14,6 +15,7 @@ use App\Traits\ApiResponseTrait;
 use App\Models\FriendRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\FriendRequestResource;
+use App\Http\Resources\UserResource;
 class FriendController extends Controller
 {
     use ApiResponseTrait;
@@ -80,4 +82,13 @@ class FriendController extends Controller
 
         return $this->errorResponse('Failed to delete the friend');
     }
+    public function findFriends()
+{
+    $user = auth()->user();
+
+    $data = findFriendsAction::execute($user);
+
+    return $this->successResponse(UserResource::collection($data));
+}
+
 }

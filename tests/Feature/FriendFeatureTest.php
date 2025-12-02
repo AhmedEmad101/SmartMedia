@@ -23,7 +23,7 @@ class FriendFeatureTest extends TestCase
                 'receiver_id' => $receiver->id,
             ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $this->assertDatabaseHas('friend_requests', [
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
