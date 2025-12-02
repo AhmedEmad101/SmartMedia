@@ -9,6 +9,7 @@ use App\Actions\Chat\getMessageAction;
 use App\Actions\Chat\markAsReadAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChatSendRequest;
+use App\Http\Resources\ChatResource;
 class ChatController extends Controller
 {use ApiResponseTrait;
   public function send(ChatSendRequest $request)
@@ -26,7 +27,7 @@ class ChatController extends Controller
     {
       $chats = getMessageAction::execute();
       if($chats){
-      return $this->successResponse($chats);
+      return $this->successResponse(ChatResource::collection($chats));
       }
         return $this->errorResponse('no chats founded',404);
     }
