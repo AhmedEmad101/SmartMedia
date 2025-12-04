@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Chat extends Model
 {
-   use HasFactory;
+    use HasFactory;
+
     protected $fillable = [
         'sender_id',
         'receiver_id',
@@ -14,9 +16,11 @@ class Chat extends Model
         'attachment',
         'is_read',
     ];
+
     protected $casts = [
         'is_read' => 'boolean',
-    ]; 
+    ];
+
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');

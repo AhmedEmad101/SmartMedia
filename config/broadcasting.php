@@ -1,4 +1,5 @@
 <?php
+
 return
 ['pusher' => [
     'driver' => 'pusher',

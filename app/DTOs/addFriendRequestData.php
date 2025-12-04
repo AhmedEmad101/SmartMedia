@@ -5,7 +5,7 @@ namespace App\DTOs;
 final class addFriendRequestData
 {
     public function __construct(
-        public int $receiver_id	
+        public int $receiver_id
     ) {}
 
     public static function fromRequest($request): self

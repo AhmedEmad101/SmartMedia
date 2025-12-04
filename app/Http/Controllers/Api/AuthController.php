@@ -6,11 +6,13 @@ use App\Actions\Auth\loginAction;
 use App\Actions\Auth\logoutAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
+
 class AuthController extends Controller
 {
     use ApiResponseTrait;
+
     public function login(LoginRequest $request, LoginAction $loginAction)
     {
         try {
@@ -23,7 +25,7 @@ class AuthController extends Controller
 
             return $this->successResponse([
                 'token' => $token,
-                'user' => auth()->user()
+                'user' => auth()->user(),
             ], 'Login successful!');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
@@ -32,14 +34,16 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-       try {
+        try {
             (new logoutAction)->execute($request);
+
             return $this->successResponse(null, 'Logged out successfully');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
     }
-     public function login_execption(Request $request)
+
+    public function login_execption(Request $request)
     {
         return $this->errorResponse('You have to login', 401);
     }

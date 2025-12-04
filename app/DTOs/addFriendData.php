@@ -5,7 +5,7 @@ namespace App\DTOs;
 final class addFriendData
 {
     public function __construct(
-        public int $sender_id	,
+        public int $sender_id,
         public string $status
     ) {}
 

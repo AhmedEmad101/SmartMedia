@@ -91,9 +91,10 @@ class PostController extends Controller
         }
 
         $liked = $likePostAction->execute($user, $post);
+
         return $this->successResponse([
             'liked' => $liked,
-            'likes_count' => $post->likes()->count()
+            'likes_count' => $post->likes()->count(),
         ], 200);
     }
 

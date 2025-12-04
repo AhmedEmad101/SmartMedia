@@ -23,17 +23,18 @@ class ChatSendRequest extends FormRequest
     {
         return [
             'receiver_id' => 'required|exists:users,id',
-            'message'     => 'nullable|string',
-            'attachment'  => 'nullable|string',
+            'message' => 'nullable|string',
+            'attachment' => 'nullable|string',
         ];
     }
-     public function messages(): array
+
+    public function messages(): array
     {
         return [
             'receiver_id.required' => 'The receiver ID is required.',
-            'receiver_id.exists'   => 'The specified receiver does not exist.',
-            'message.string'       => 'The message must be a string.',
-            'attachment.string'    => 'The attachment must be a string.',
+            'receiver_id.exists' => 'The specified receiver does not exist.',
+            'message.string' => 'The message must be a string.',
+            'attachment.string' => 'The attachment must be a string.',
         ];
     }
 }

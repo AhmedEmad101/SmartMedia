@@ -16,12 +16,14 @@ final class likePostAction
 
         if ($existing) {
             $existing->delete();
+
             return false;
         }
         Like::create([
             'user_id' => $user->id,
             'post_id' => $post->id,
         ]);
+
         return true;
     }
 }

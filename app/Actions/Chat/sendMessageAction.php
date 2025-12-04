@@ -2,9 +2,9 @@
 
 namespace App\Actions\Chat;
 
-use App\Models\Chat;
-use App\Models\User;
 use App\Events\ChatCreated;
+use App\Models\Chat;
+
 class sendMessageAction
 {
     public static function execute(int $senderId, int $receiverId, string $message)

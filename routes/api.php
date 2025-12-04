@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ChatController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Route;
+
 Broadcast::routes(['middleware' => ['auth:sanctum']]);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/login', [AuthController::class, 'login_execption'])->name('login');
@@ -27,18 +28,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{friend}', [FriendController::class, 'delete_friend']);
         Route::get('/find', [FriendController::class, 'findFriends']);
     });
-     Route::prefix('user')->group(function () {
-         Route::get('profile', [UserController::class, 'profile']);
-         Route::post('avatar', [UserController::class, 'updateAvatar']);
-        });
-         Route::prefix('chat')->group(function () {
-          Route::post('/send', [ChatController::class, 'send']);
-          Route::get('/', [ChatController::class, 'fetch']);
-          Route::post('/read/{sender_id}', [ChatController::class, 'markRead']);
+    Route::prefix('user')->group(function () {
+        Route::get('profile', [UserController::class, 'profile']);
+        Route::post('avatar', [UserController::class, 'updateAvatar']);
+    });
+    Route::prefix('chat')->group(function () {
+        Route::post('/send', [ChatController::class, 'send']);
+        Route::get('/', [ChatController::class, 'fetch']);
+        Route::post('/read/{sender_id}', [ChatController::class, 'markRead']);
 
-        });
-
+    });
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
- 

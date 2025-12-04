@@ -2,9 +2,9 @@
 
 namespace App\Actions\Friend;
 
-use App\Models\User;
 use App\Models\Friend;
 use App\Models\FriendRequest;
+use App\Models\User;
 
 class findFriendsAction
 {
@@ -27,8 +27,9 @@ class findFriendsAction
             $sentRequests,
             $receivedRequests
         ));
+
         return User::whereNotIn('id', $exclude)
-            ->select("id", "name", "avatar")
+            ->select('id', 'name', 'avatar')
             ->get();
     }
 }

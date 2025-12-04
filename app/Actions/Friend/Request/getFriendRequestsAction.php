@@ -12,9 +12,10 @@ final class getFriendRequestsAction
             ->where('receiver_id', $userId)
             ->where('status', 'pending')
             ->get();
-if($requests->count()>0){
-        return $requests;
-}
-return null;
+        if ($requests->count() > 0) {
+            return $requests;
+        }
+
+        return null;
     }
 }

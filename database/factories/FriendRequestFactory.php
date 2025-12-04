@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\FriendRequest;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +19,7 @@ class FriendRequestFactory extends Factory
         return [
             'sender_id' => User::factory(), // creates a user if not provided
             'reciever_id' => $this->faker->paragraph(),
-            'status' => rand('pending','accepted'), // or fake image if you want
+            'status' => rand('pending', 'accepted'), // or fake image if you want
         ];
     }
 }
